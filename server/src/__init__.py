@@ -48,8 +48,4 @@ def create_app(test_config= None):
     def handle_500(e):
         return jsonify({'error': 'Something went wrong, we are working on it'}), HTTP_500_INTERNAL_SERVER_ERROR
 
-    @app.route("/")
-    def index():
-        return render_template('index.html')    
-    
     return app
