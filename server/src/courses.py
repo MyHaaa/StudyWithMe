@@ -9,9 +9,9 @@ courses = Blueprint("courses", __name__, url_prefix="/api/v1/courses")
 
 """This was a standard way to do define a route in a previous versons of flask, if we want to define an endpoint (end point and route are the same thing ) that accepts both a get and a post method """
 @courses.route('/', methods=['POST', 'GET'])
-@jwt_required()
+# @jwt_required()
 def handle_courses():
-    current_user = get_jwt_identity()
+    # current_user = get_jwt_identity()
 
     if request.method == 'POST':
         courseName = request.get_json().get('courseName', '')

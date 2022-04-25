@@ -15,7 +15,14 @@ const route = [
 
 function renderRoutes(){
     return route.map((route, index)=> {
-        return (
+        // route.get("/", (req, res) => {
+        //     res.setHeader("Access-Control-Allow-Origin", "*")
+        //     res.setHeader("Access-Control-Allow-Credentials", "true");
+        //     res.setHeader("Access-Control-Max-Age", "1800");
+        //     res.setHeader("Access-Control-Allow-Headers", "content-type");
+        //     res.setHeader( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
+        //      });
+        return (           
             <Route key={index} path={route.path} element={<route.element />} />
         );
     });
