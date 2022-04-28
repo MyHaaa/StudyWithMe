@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+from requests import Session
+
 db= SQLAlchemy()
 
 class Course(db.Model):
@@ -13,7 +15,7 @@ class Course(db.Model):
 
     def __repr__(self):
         return f"Course('{self.courseID}', '{self.courseName}')"
-
+  
 class Lecture(db.Model):
     lectureID= db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -30,16 +32,19 @@ class Student(db.Model):
     studentName= db.Column(db.Text(), unique=False, nullable=False)
     gender=db.Column(db.Boolean(), nullable=False),
     dateOfBirth=db.Column(db.Date, nullable=False)
-    classrooms = db.relationship('Classroom', backref='student', lazy=True)
+    classroomDetails = db.relationship('ClassroomDetail', backref='student', lazy=True)
     studentImages = db.relationship('StudentImage', backref='student', lazy=True)
+    studentAbsents = db.relationship('StudentAbsent', backref='student', lazy=True)
 
     def __repr__(self):
         return f"Student('{self.studentID}', '{self.studentName}')"
 
 class StudentImage(db.Model):
     imgID = db.Column(db.Integer, primary_key=True)
-    image_file = db.Column(db.String(20), nullable = False, default = ' default.jpg')
-    vector= db.Column(db.String(20))
+    img = db.Column(db.Text, nullable = False, default = ' default.jpg')
+    name = db.Column(db.Text, nullable = False, default = ' default.jpg')
+    vector= db.Column(db.Text)
+    mimetype = db.Column(db.Text, nullable= False)
     student_ID = db.Column(db.Integer, db.ForeignKey('student.studentID'))
 
     def __repr__(self):
@@ -48,18 +53,16 @@ class StudentImage(db.Model):
 class Classroom(db.Model):
     classroomID= db.Column(db.Integer, primary_key=True)
     roomNo= db.Column(db.Integer, nullable = False)
-    classDay = db.Column(db.Date, nullable = False )
+    classDay = db.Column(db.Integer, nullable = False )
     timeStart= db.Column(db.Time, nullable = False)
     timeEnd= db.Column(db.Time, nullable = False)
     course_ID= db.Column(db.Integer, db.ForeignKey('course.courseID'))
     lecture_ID= db.Column(db.Integer, db.ForeignKey('lecture.lectureID'))
-    student_ID= db.Column(db.Integer, db.ForeignKey('student.studentID'))
     classroomDetails= db.relationship('ClassroomDetail', backref='classroom', lazy=True)
 
-
-
     def __repr__(self):
-         return f"Classroom('{self.classroomID}', '{self.startDate}', '{self.roomNo}', '{self.timeStart}', '{self.timeEnd}')" 
+         return f"Classroom('{self.classroomID}', '{self.classDay}', '{self.roomNo}', '{self.timeStart}', '{self.timeEnd}')" 
+
     
 class ClassroomDetail(db.Model):
     classroomDetailID= db.Column(db.Integer, primary_key=True)
@@ -69,3 +72,14 @@ class ClassroomDetail(db.Model):
 
     def __repr__(self):
         return f"ClassroomDetail('{self.classroomDetailID}')" 
+
+class StudentAbsent(db.Model):
+    studentAbsentID = db.Column(db.Integer, primary_key=True)
+    date= db.Column(db.Date, nullable=False)
+    absentStatus = db.Column(db.Boolean(), nullable=False)
+    student_ID = db.Column(db.Integer, db.ForeignKey('student.studentID'))
+
+    def __repr__(self):
+         return f"StudentAbsent('{self.studentAbsentID}', '{self.date}', '{self.absentStatus}', '{self.student_ID}')" 
+
+    

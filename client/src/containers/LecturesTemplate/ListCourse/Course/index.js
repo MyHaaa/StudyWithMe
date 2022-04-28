@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import '../../../Assets/style.css'
+import {Link} from 'react-router-dom'
 
 export default class Course extends Component {
   render() {
@@ -18,7 +19,7 @@ export default class Course extends Component {
                      <p><b>From:</b> {course.courseStart} <br/><b>To:</b> {course.courseEnd}</p>
                 </div>
                 <div className='card-read-more'>
-                    <a href="http://www.fostrap.com/2016/03/bootstrap-3-carousel-fade-effect.html" className='btn btn-link btn-block'>Read More</a>
+                    <Link to={`/detail-course/${course.courseID}`} className='btn btn-link btn-block'>Read More</Link>
                 </div>
             </div>   
         </div>                 

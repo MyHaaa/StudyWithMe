@@ -1,11 +1,20 @@
+import json
 from flask import Blueprint, request
 from flask.json import jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from requests import Session
 from src.constants.http_status_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
 from datetime import date, datetime
-from src.database import Course, db
+from src.database import Course, db, Classroom
 
 courses = Blueprint("courses", __name__, url_prefix="/api/v1/courses")
+
+class DatetimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        try:
+            return super().default(obj)
+        except TypeError:
+            return str(obj)
 
 """This was a standard way to do define a route in a previous versons of flask, if we want to define an endpoint (end point and route are the same thing ) that accepts both a get and a post method """
 @courses.route('/', methods=['POST', 'GET'])
@@ -62,12 +71,33 @@ def get_course(id):
     if not course:
         return jsonify({'message': 'Item not found'}), HTTP_404_NOT_FOUND
 
+    classrooms = db.session.query(
+        Classroom
+    ).filter(Classroom.course_ID == course.courseID).all()
+
+    data = []
+
+    for room in classrooms:
+        room.timeStart = json.dumps(room.timeStart, cls=DatetimeEncoder)
+        room.timeEnd = json.dumps(room.timeEnd, cls=DatetimeEncoder)
+        data.append({            
+            'classroomID': room.classroomID,
+            'roomNo': room.roomNo,
+            'classDay': room.classDay,
+            'timeStart': room.timeStart,
+            'timeEnd': room.timeEnd,
+            'course_ID': room.course_ID,
+            'lecture_ID': room.lecture_ID,
+        })
+    
+
     return jsonify({
         'courseID': course.courseID,
         'courseName': course.courseName,
         'content': course.content,
         'courseStart': course.courseStart,
-        'courseEnd': course.courseEnd
+        'courseEnd': course.courseEnd,
+        'classroom': data
     }), HTTP_200_OK
 
 # When editing, we use PUT or PATCH

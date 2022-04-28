@@ -21,7 +21,7 @@ def handle_courses():
                 'Error': 'Student name already exist'
             }), HTTP_409_CONFLICT
         
-        genderValue = distutils.util.strtobool(gender)
+        genderValue = bool(gender)
         birth = datetime.strptime(dateOfBirth, '%d/%m/%Y').date()
 
         student= Student(studentName= studentName, gender=genderValue, dateOfBirth=birth)

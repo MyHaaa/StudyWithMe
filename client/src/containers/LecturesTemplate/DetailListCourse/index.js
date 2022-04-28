@@ -3,6 +3,7 @@ import Loader from '../../../components/Loader';
 import {connect} from 'react-redux'
 import { actionFetchDetailCourse } from './modules/action';
 import { useParams } from 'react-router-dom';
+import '../../Assets/detail-course.css'
 
 export function withRouter(Children){
   return(props)=>{
@@ -20,12 +21,62 @@ class DetailCourse extends Component {
     console.log(courseID)
   }
 
-    render() {
+  renderDetailCourse=()=>{
+    
+  }
+
+  render() {
+    const { data, loading } = this.props;
+    if (loading) return <Loader />;
     return (
-      <div>index</div>
+      <div className="container" style={{backgroundColor: "white"}}>
+      <h3>Detail of Cousre</h3>
+      <div className="row">
+        <div className="col-md-6">
+          
+        </div>
+        <div className="col-md-6">
+          <table className="table">
+            <tbody>
+              <tr>
+                <td className='table-row-content'>Cousre Name</td>
+                <td>{data?.courseName}</td>
+              </tr>
+              <tr>
+                <td className='table-row-content'>Description</td>
+                <td>{data?.content}</td>
+              </tr>
+              <tr>
+                <td className='table-row-content'>Cousre Started Day</td>
+                <td>{data?.courseStart}</td>
+              </tr>
+              <tr>
+                <td className='table-row-content'>Course Ended Day</td>
+                <td>{data?.courseEnd}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
+          <table className="table">
+            <thead>
+              <tr>
+                <td className='table-row-content'>ClassroomID</td>
+                <td className='table-row-content'>Room No</td>
+                <td className='table-row-content'>Class Day</td>
+                <td className='table-row-content'>Time Start</td>
+                <td className='table-row-content'>Time End</td>
+              </tr>
+            </thead>
+            {/* <tbody>{this.renderTable()}</tbody> */}
+          </table>
+        </div>
+      </div>
+    </div>
     )
   }
-  
 }
 
 const mapStateToProps = (state)=>{
