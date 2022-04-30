@@ -30,4 +30,8 @@ body{
 }
 .table-row-content{
     font-weight: bold;
+    text-align: center;
+}
+.table-row-td{
+    text-align: center;
 }

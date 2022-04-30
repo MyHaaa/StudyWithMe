@@ -2,7 +2,7 @@ import json
 from flask import Blueprint, request,Response
 from flask.json import jsonify
 from datetime import date, datetime, time
-from src.database import Classroom, db
+from src.database import Classroom, db,Student, ClassroomDetail
 from src.constants.http_status_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
 
 classrooms = Blueprint("classrooms", __name__, url_prefix="/api/v1/classrooms")
@@ -75,4 +75,42 @@ def get_classroom(id):
     if not classroom:
         return jsonify({'message': 'Item not found'}), HTTP_404_NOT_FOUND
     
+    details = ClassroomDetail.query.filter(ClassroomDetail.classroomID==id).all()
+
+    data =[]
+
+    for student in details:
+        data.append({
+            'studentID': student.student_ID
+        })
+    classroom.timeStart = json.dumps(classroom.timeStart, cls=DatetimeEncoder) 
+    classroom.timeEnd = json.dumps(classroom.timeEnd, cls=DatetimeEncoder)
+
+    return jsonify({
+        'classroomID': classroom.classroomID,
+        'roomNo': classroom.roomNo,
+        'classDay': classroom.classDay,
+        'timeStart': classroom.timeStart,
+        'timeEnd':  classroom.timeEnd,
+        'course_ID': classroom.course_ID,
+        'lecture_ID': classroom.lecture_ID,
+        'student': data
+    }), HTTP_200_OK
+
+@classrooms.post("/add-to-classroom/<int:id>")
+def addStudentToClass(id):
+    student_ID = request.get_json().get('student_ID', '')
+    studentID = int(student_ID)
+
+    classroomDetail= ClassroomDetail(classroomID= id,student_ID= studentID )
+
+    db.session.add(classroomDetail)
+    db.session.commit()
+
+    return jsonify({
+        'classroomDetailID': classroomDetail.classroomDetailID,
+        'studentID': classroomDetail.student_ID,
+        'classroomID': classroomDetail.classroomID
+    }), HTTP_200_OK
+
     

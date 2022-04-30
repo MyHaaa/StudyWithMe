@@ -6,7 +6,6 @@ from src.lectures import lectures
 from src.students import students
 from src.studentImages import studentImages
 from src.classrooms import classrooms
-from src.classroomDetails import classroomDetails
 from flask_jwt_extended import JWTManager
 from src.constants.http_status_code import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_404_NOT_FOUND
 from flask.json import jsonify
@@ -27,6 +26,9 @@ def create_app(test_config= None):
     db.app = app
     db.init_app(app)
 
+    # ma.app = app
+    # ma.init_app(app)
+
     JWTManager(app)
 
     with app.app_context():
@@ -38,11 +40,10 @@ def create_app(test_config= None):
     app.register_blueprint(students)
     app.register_blueprint(studentImages)
     app.register_blueprint(classrooms)
-    app.register_blueprint(classroomDetails)
 
     @app.errorhandler(HTTP_404_NOT_FOUND)
     def handle_404(e):
-        return jsonify({'error': 'Not found'}), HTTP_404_NOT_FOUND
+        return jsonify({'Error': 'Not found'}), HTTP_404_NOT_FOUND
 
     @app.errorhandler(HTTP_500_INTERNAL_SERVER_ERROR)
     def handle_500(e):

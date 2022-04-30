@@ -52,7 +52,7 @@ def handle_courses():
         return jsonify({'data': data}), HTTP_200_OK
 
 @students.get("/<int:id>")
-def get_course(id):
+def get_student(id):
     # current_user = get_jwt_identity()
 
     student = Student.query.filter_by(studentID=id).first()
@@ -69,7 +69,7 @@ def get_course(id):
 
 @students.put('/<int:id>')
 @students.patch('/<int:id>')
-def editCourse(id):
+def edit_student(id):
     # current_user = get_jwt_identity()
 
     student = Student.query.filter_by(courseID=id).first()
@@ -95,7 +95,7 @@ def editCourse(id):
     }), HTTP_200_OK
 
 @students.delete("/<int:id>")
-def delete_course(id):
+def delete_student(id):
     student = Student.query.filter_by(id=id).first()
 
     if not student:

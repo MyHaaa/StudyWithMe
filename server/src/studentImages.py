@@ -1,7 +1,7 @@
 from fileinput import filename
 from flask.json import jsonify
 import mimetypes
-from flask import Blueprint, request
+from flask import Blueprint, request, Response
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import  FileStorage
 from src.constants.http_status_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
@@ -28,7 +28,7 @@ def upload_img(studentID):
 
 @studentImages.route("/<int:id>")
 def get_Image(id):
-    images= StudentImage.query.filter_by(studentID = id)
+    images= StudentImage.query.filter_by(student_ID = id)
 
     data = []
 

@@ -68,7 +68,7 @@ class ClassroomDetail(db.Model):
     classroomDetailID= db.Column(db.Integer, primary_key=True)
     classroomID= db.Column(db.Integer, db.ForeignKey('classroom.classroomID'))
     student_ID= db.Column(db.Integer, db.ForeignKey('student.studentID'))
-    adsentTime = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+    adsentTime = db.Column(db.DateTime, nullable = True)
 
     def __repr__(self):
         return f"ClassroomDetail('{self.classroomDetailID}')" 

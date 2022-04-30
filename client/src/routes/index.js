@@ -1,6 +1,8 @@
 import Dashboard from "../containers/LecturesTemplate/Dashboard"
 import ListCourse from "../containers/LecturesTemplate/ListCourse"
 import DetailCourse from "../containers/LecturesTemplate/DetailListCourse";
+import DetailClassroom from "../containers/LecturesTemplate/DetailClassroom";
+import DetailStudent from "../containers/LecturesTemplate/DetailStudent";
 import { Route } from "react-router-dom";
 
 const route = [
@@ -15,6 +17,14 @@ const route = [
     {
         path: '/detail-course/:courseID',
         element: DetailCourse
+    },
+    {
+        path: '/detail-classroom/:classroomID',
+        element: DetailClassroom
+    },
+    {
+        path: '/detail-student/:studentID',
+        element: DetailStudent
     }
 ];
 

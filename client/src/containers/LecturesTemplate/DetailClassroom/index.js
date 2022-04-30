@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import Loader from '../../../components/Loader';
 import {connect} from 'react-redux'
-import { actionFetchDetailCourse } from './modules/action';
+import { actionFetchDetailClassroom } from './modules/action';
 import { useParams } from 'react-router-dom';
-import '../../Assets/detail-course.css'
 import {Link} from 'react-router-dom'
+import Loader from '../../../components/Loader';
 
 export function withRouter(Children){
   return(props)=>{
@@ -14,12 +13,12 @@ export function withRouter(Children){
  }
 }
 
-class DetailCourse extends Component {
-  
+class DetailClassroom extends Component {
+
   componentDidMount(){
-    const { courseID } = this.props.match.params
-    this.props.fetchData(courseID)
-    console.log(courseID)
+    const { classroomID } = this.props.match.params
+    this.props.fetchData(classroomID)
+    console.log(classroomID)
   }
 
   renderSwitch(param) {
@@ -45,18 +44,13 @@ class DetailCourse extends Component {
 
   renderTable = () => {
     const { data } = this.props;
-    return data?.classroom?.map((item) => {
+    return data?.student?.map((item) => {
       return (
-        <tr key={item.classroomID}>
-          <td className='table-row-td'>{item.classroomID}</td>
-          <td className='table-row-td'>{item.roomNo}</td>
+        <tr key={item.studentID}>
+          <td className='table-row-td'>{item.studentID}</td>
+          
           <td className='table-row-td'>
-            {this.renderSwitch(item.classDay)}
-          </td>       
-          <td className='table-row-td'>{item.timeStart}</td>
-          <td className='table-row-td'>{item.timeEnd}</td>
-          <td className='table-row-td'>
-            <Link to={`/detail-classroom/${item.classroomID}`}  className="btn btn-success">
+            <Link to={`/detail-classroom/${item.studentID}`}  className="btn btn-success">
               Detail
             </Link>
           </td>
@@ -65,13 +59,12 @@ class DetailCourse extends Component {
     });
   };
 
-
   render() {
     const { data, loading } = this.props;
     if (loading) return <Loader />;
     return (
       <div className="container" style={{backgroundColor: "white"}}>
-      <h3>Detail of Cousre</h3>
+      <h3>Detail of Classroom</h3>
       <div className="row">
         <div className="col-md-5">
           <img className="img-fluid" src="https://1.bp.blogspot.com/-Bii3S69BdjQ/VtdOpIi4aoI/AAAAAAAABlk/F0z23Yr59f0/s640/cover.jpg" />
@@ -80,20 +73,20 @@ class DetailCourse extends Component {
           <table className="table">
             <tbody>
               <tr >
-                <td className='table-row-content' style={{width: "150px"}}>Name</td>
-                <td>{data?.courseName}</td>
+                <td className='table-row-content' style={{width: "150px"}}>Classroom Code:</td>
+                <td>{data?.classroomID}</td>
               </tr>
               <tr>
-                <td className='table-row-content'>Description</td>
-                <td>{data?.content}</td>
+                <td className='table-row-content'>Day of Class:</td>
+                <td> {this.renderSwitch(data?.classDay)}</td>
               </tr>
               <tr>
-                <td className='table-row-content'>Started Day</td>
-                <td>{data?.courseStart}</td>
+                <td className='table-row-content'>Started Time:</td>
+                <td>{data?.timeStart}</td>
               </tr>
               <tr>
-                <td className='table-row-content'>Ended Day</td>
-                <td>{data?.courseEnd}</td>
+                <td className='table-row-content'>Ended Time:</td>
+                <td>{data?.timeEnd}</td>
               </tr>
             </tbody>
           </table>
@@ -104,11 +97,8 @@ class DetailCourse extends Component {
           <table className="table">
             <thead>
               <tr>
-                <td className='table-row-content'>ClassroomID</td>
-                <td className='table-row-content'>Room No</td>
-                <td className='table-row-content'>Class Day</td>
-                <td className='table-row-content'>Time Start</td>
-                <td className='table-row-content'>Time End</td>
+                <td className='table-row-content'>Student ID</td>
+                <td className='table-row-content'>Action</td>
               </tr>
             </thead>
             <tbody>{this.renderTable()}</tbody>
@@ -122,17 +112,17 @@ class DetailCourse extends Component {
 
 const mapStateToProps = (state)=>{
   return{
-    loading: state.detailCourseReducer.loading,
-    data: state.detailCourseReducer.data
+    loading: state.detailClassroomReducer.loading,
+    data: state.detailClassroomReducer.data
   }
 }
 
 const mapDispatchToProps = (dispatch)=>{
   return{
-    fetchData: (courseID)=>{
-      dispatch(actionFetchDetailCourse(courseID))
+    fetchData: (classroomID)=>{
+      dispatch(actionFetchDetailClassroom(classroomID))
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) ( withRouter(DetailCourse));
+export default connect(mapStateToProps, mapDispatchToProps) ( withRouter(DetailClassroom));
