@@ -50,7 +50,7 @@ class DetailClassroom extends Component {
           <td className='table-row-td'>{item.studentID}</td>
           
           <td className='table-row-td'>
-            <Link to={`/detail-classroom/${item.studentID}`}  className="btn btn-success">
+            <Link to={`/detail-student/${item.studentID}`}  className="btn btn-success">
               Detail
             </Link>
           </td>

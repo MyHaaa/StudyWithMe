@@ -75,7 +75,7 @@ def get_classroom(id):
     if not classroom:
         return jsonify({'message': 'Item not found'}), HTTP_404_NOT_FOUND
     
-    details = ClassroomDetail.query.filter(ClassroomDetail.classroomID==id).all()
+    details = ClassroomDetail.query.filter(ClassroomDetail.classroomID==id).all() 
 
     data =[]
 

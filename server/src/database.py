@@ -30,7 +30,7 @@ class Lecture(db.Model):
 class Student(db.Model):
     studentID= db.Column(db.Integer, primary_key=True)
     studentName= db.Column(db.Text(), unique=False, nullable=False)
-    gender=db.Column(db.Boolean(), nullable=False),
+    gender=db.Column(db.Boolean, nullable=False),
     dateOfBirth=db.Column(db.Date, nullable=False)
     classroomDetails = db.relationship('ClassroomDetail', backref='student', lazy=True)
     studentImages = db.relationship('StudentImage', backref='student', lazy=True)
