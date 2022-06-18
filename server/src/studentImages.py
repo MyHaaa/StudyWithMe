@@ -9,9 +9,9 @@ from src.database import StudentImage, db
 
 studentImages = Blueprint("studentImages", __name__, url_prefix="/api/v1/studentImages")
 
-@studentImages.route("/upload", methods=['POST'])
-def upload_img(studentID):
-    pic = request.files['pic']
+@studentImages.route("/upload/<int:id>", methods=['POST'])
+def upload_img(id):
+    pic = request.files['img']
 
     if not pic:
         return 'No pic uploaded', HTTP_400_BAD_REQUEST
@@ -20,7 +20,7 @@ def upload_img(studentID):
     mimetype =pic.mimetype
 
     img = StudentImage(img=pic.read(), name=filename, vetor= "",
-    studentID=studentID, mimetype=mimetype)
+    studentID=id, mimetype=mimetype)
     db.session.add(img)
     db.session.commit()
 

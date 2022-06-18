@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import { actionFetchDetailStudent } from './modules/action';
 import { useParams } from 'react-router-dom';
 import Loader from '../../../components/Loader';
+import Modal from './Modal';
 import WebcamComponent from './WebcamComponent';
-
 
 export function withRouter(Children){
   return(props)=>{
@@ -17,7 +17,12 @@ export function withRouter(Children){
 
 const DetailStudent = (props) => {
 
-  const [activeCam, setActiveCam] = useState("openCamera")
+  const [activeCam, setActiveCam] = useState(false)
+
+  // const [openModal, setOpenModal] = useState(false)
+  // const toggleModal = () => {
+  //   setOpenModal(!openModal);
+  // }
 
   useEffect(() => { 
     const { studentID } = props.match.params
@@ -36,7 +41,7 @@ const DetailStudent = (props) => {
       <div className="row" style={{ height: "480"}}>
         <div className="col-md-8" >
           <div >
-            {activeCam === "Camera" && <WebcamComponent/>}
+            {activeCam === true && <WebcamComponent studentID={props.match.params.studentID}/>}
           </div>
         </div>
         <div className="col-md-4">
@@ -60,7 +65,15 @@ const DetailStudent = (props) => {
               </tr>
               <tr>
                 <td> 
-                  <button onClick={()=>setActiveCam("Camera")} className="btn btn-primary">Open camera</button>
+                  {!activeCam?
+                  <button onClick={()=>setActiveCam(true)} className="btn btn-primary">Open camera</button>
+                  : <button onClick={()=>setActiveCam(false)} className="btn btn-primary">Close camera</button>
+
+                  }
+                  {/* {!openModal ?
+                    <button type="button" onClick={toggleModal}>Open Modal</button>
+                    : <Modal handler={toggleModal} />
+                  } */}
                 </td>
               </tr>
             </tbody>
